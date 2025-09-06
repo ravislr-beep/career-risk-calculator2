@@ -2,6 +2,14 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSupabaseAdmin } from '../../lib/supabaseClient'
 import { v4 as uuidv4 } from 'uuid'
 import { deepseekGenerate } from '../../lib/deepseek'
+type Weights = {
+  skills: number
+  performance: number
+  network: number
+  mobility: number
+  notice: number
+  plateau: number
+}
 
 type Payload = {
   fullName: string
@@ -21,7 +29,7 @@ type Payload = {
 
 function clamp(v: number, a=0, b=100){ return Math.max(a, Math.min(b, v)) }
 
-const DEFAULT_WEIGHTS = {
+const DEFAULT_WEIGHTS: Weights = {
   skills: 0.28,
   performance: 0.22,
   network: 0.18,
@@ -29,6 +37,7 @@ const DEFAULT_WEIGHTS = {
   notice: 0.12,
   plateau: 0.08
 }
+
 
 function buildDeepseekPrompt(p: Payload, details: any) {
   // Construct a clear, structured prompt for Deepseek to produce:
@@ -79,8 +88,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const p = req.body as Payload
 
     // fetch weights from DB
-    const { data: wdata } = await supabaseAdmin.from('weights').select('*').order('updated_at', { ascending: false }).limit(1).single()
-    const weights = wdata?.weights ?? DEFAULT_WEIGHTS
+  const { data: wdata } = await supabaseAdmin
+  .from('weights')
+  .select('*')
+  .order('updated_at', { ascending: false })
+  .limit(1)
+  .single()
+
+const weights: Weights = (wdata?.weights as Weights) ?? DEFAULT_WEIGHTS
+
 
     // compute factors
     const skillsRisk = 100 - (p.skillProficiencyAvg/5)*100
