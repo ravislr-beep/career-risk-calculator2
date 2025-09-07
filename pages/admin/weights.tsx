@@ -72,23 +72,10 @@ export default function WeightsAdmin() {
               min="0"
               max="1"
               type="number"
-              value={form[k]}
-              onChange={(e) => setField(k, parseFloat(e.target.value))}
+              value={form[k]}   // ✅ no `as any`
+              onChange={(e) => setField(k, parseFloat(e.target.value))} // ✅ cast to number
               className="border px-2 py-1 rounded flex-1"
             />
           </div>
         ))}
-        <div className="flex space-x-2 mt-3">
-          <button
-            type="button"
-            disabled={loading}
-            onClick={save}
-            className="px-4 py-2 rounded bg-blue-600 text-white"
-          >
-            {loading ? "Saving..." : "Save"}
-          </button>
-        </div>
-      </form>
-    </div>
-  )
-}
+        <div className="
