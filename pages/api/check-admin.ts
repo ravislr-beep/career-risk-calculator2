@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const supabaseAdmin = getSupabaseAdmin()
     const { data: userData } = await supabaseAdmin.auth.getUser(token)
-    const user = userData?.data?.user
+    const user = userData?.user
     if (!user) return res.status(200).json({ isAdmin: false })
     const { data: appUser } = await supabaseAdmin.from('app_users').select('*').eq('id', user.id).single()
     const adminEmails = (process.env.ADMIN_EMAILS ?? '').split(',').map(s => s.trim()).filter(Boolean)
