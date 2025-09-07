@@ -8,7 +8,7 @@ type Weights = {
   notice: number
   plateau: number
 }
-
+ 
 export default function WeightsAdmin() {
   const [form, setForm] = useState<Weights>({
     skills: 0.28,
