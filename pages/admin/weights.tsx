@@ -37,6 +37,7 @@ export default function WeightsAdmin() {
     load()
   }, [])
 
+  // ✅ Strongly type setField
   const setField = (k: keyof Weights, v: number) => {
     setForm({ ...form, [k]: v })
   }
@@ -72,8 +73,8 @@ export default function WeightsAdmin() {
               min="0"
               max="1"
               type="number"
-              value={form[k]}   // ✅ no `as any`
-              onChange={(e) => setField(k, parseFloat(e.target.value))} // ✅ value converted to number
+              value={form[k]}   // ✅ safe
+              onChange={(e) => setField(k, parseFloat(e.target.value))} // ✅ string → number
               className="border px-2 py-1 rounded flex-1"
             />
           </div>
