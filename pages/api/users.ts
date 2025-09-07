@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const supabaseAdmin = getSupabaseAdmin()
     const { data: userData, error: userErr } = await supabaseAdmin.auth.getUser(token)
-    if (userErr || !userData?.data?.user) return res.status(401).json({ error: 'Invalid token' })
+    if (userErr || ! userData?.user) return res.status(401).json({ error: 'Invalid token' })
     const user = userData.data.user
 
     const payload = {
