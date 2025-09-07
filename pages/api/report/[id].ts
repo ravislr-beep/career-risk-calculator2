@@ -1,3 +1,4 @@
+// @ts-ignore
 import type { NextApiRequest, NextApiResponse } from 'next'
 import PDFDocument from 'pdfkit'
 import { getSupabaseAdmin } from '../../../lib/supabaseClient'
